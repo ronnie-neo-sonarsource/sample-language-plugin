@@ -31,6 +31,11 @@ You can fix this by updating it to `alerts.operator.!\u003d=`
 
 The same will happen for `alerts.operator.==` which should be updated to `alerts.operator.\u003d=`
 
-Utilizing OPENAI Costs
+The python script assume the following:
+- Tn empty translation file, so if you have existing translations, you may need to manually merge them with the generated translations.
+- The source file is in the format of surefire reports missing translations, which is the output of the SonarQube test.
+
+
+Cost of Utilizing OpenAI
 -----------------------------
 It will consume approximately 55k tokens to translate. With chatgpt-4o, it will cost approximately US$1. Adjust the model accordingly to fit your budget.
