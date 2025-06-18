@@ -41,3 +41,7 @@ The python script assume the following:
 Cost of Utilizing OpenAI
 -----------------------------
 It will consume approximately 55k tokens to translate. With chatgpt-4o, it will cost approximately US$1. Adjust the model accordingly to fit your budget.
+
+Usage
+-----------------
+This project is free to use for any purpose, including commercial use, without any restrictions. This is not part of SonarSource's official plugins, and it is not endorsed by Sonar.
