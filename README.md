@@ -44,4 +44,4 @@ It will consume approximately 55k tokens to translate. With chatgpt-4o, it will 
 
 Usage
 -----------------
-This project is free to use for any purpose, including commercial use, without any restrictions. This is not part of SonarSource's official plugins, and it is not endorsed by Sonar.
+This sample project is free to use for any purpose, including commercial use, without any restrictions. This is not part of Sonar's official plugins. This sample plugin is to be use at your own risk, and it is not supported by Sonar. The plugin is provided "as is" without any warranty of any kind, either express or implied.
