@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.sonar.plugins.l10n.JapanesePackPlugin</groupId>
+  <artifactId>sonar-l10n-ja-plugin</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>sonar-plugin</packaging>
+
+  <name>L10n :: Japanese Pack</name>
+  <description>SonarQube Language Pack for Japanese</description>
+  <inceptionYear>2025</inceptionYear>
+  <organization>
+    <name>Sonar</name>
+	<url>http://www.sonarsource.com/</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <properties>
+    <sonar.apiVersion>11.3.0.2824</sonar.apiVersion>
+    <sonar.pluginClass>org.sonar.plugins.l10n.JapanesePackPlugin</sonar.pluginClass>
+    <sonar.version>25.6.0.109173</sonar.version>
+    <sonar.mavenPackaging>1.23.0.740</sonar.mavenPackaging>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.sonarsource.api.plugin</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.apiVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.sonarsource.sonarqube</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.sonarsource.sonarqube</groupId>
+      <artifactId>sonar-core</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.sonarsource.sonarqube</groupId>
+          <artifactId>sonar-sarif</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.1</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
+        <artifactId>sonar-packaging-maven-plugin</artifactId>
+        <version>${sonar.mavenPackaging}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <!-- the entry-point class that extends org.sonar.api.SonarPlugin -->
+          <pluginClass>org.sonar.plugins.l10n.JapanesePackPlugin</pluginClass>
+
+          <!-- advanced properties can be set here. See paragraph "Advanced Build Properties". -->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

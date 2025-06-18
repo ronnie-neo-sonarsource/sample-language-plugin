@@ -1,0 +1,36 @@
+Sample Translation Plugin for SonarQube
+==============================
+
+These are the steps to generate a translation plugin for SonarQube.
+1. Download the source code from the repository:
+2. Delete the `src/main/resources/l10n` directory.
+3. Build the project using Maven:
+   ```bash
+   mvn test
+   ```
+4. This will generate a list of missing translations in the `target/` directory.
+5. Configure the python script to include your OpenAI API key by editing the `.env` file in the python folder:
+6. Run the python script `generate_translations.py`.  
+   ```bash
+   python3 generate_translations.py
+   ```
+   This script will automatically assume the missing translation file in `../target/surefire-reports/org.sonar.plugins.l10n.JapanesePackPluginTest.txt` and output it to `../src/main/resources/org/sonar/l10n/core_ja.properties`
+7. Build the project again using Maven:
+   ```bash
+   mvn clean package
+   ```
+8. Copy the target JAR file to the SonarQube plugins directory:
+   ```bash
+   cp target/sonar-l10n-ja-plugin-*.jar /path/to/sonarqube/extensions/plugins/
+   ```
+   
+Potential Issues
+-----------------
+You may encounter the following issues with `alerts.operator.!=` not being translated correctly.
+You can fix this by updating it to `alerts.operator.!\u003d=`
+
+The same will happen for `alerts.operator.==` which should be updated to `alerts.operator.\u003d=`
+
+Utilizing OPENAI Costs
+-----------------------------
+It will consume approximately 55k tokens to translate. With chatgpt-4o, it will cost approximately US$1. Adjust the model accordingly to fit your budget.
