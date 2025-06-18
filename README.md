@@ -1,9 +1,11 @@
 Sample Translation Plugin for SonarQube
 ==============================
 
+Please also refer to the [SonarQube documentation](https://docs.sonarsource.com/sonarqube-server/latest/extension-guide/internationalization/) for more details on how to create a translation plugin.
+
 These are the steps to generate a translation plugin for SonarQube.
 1. Download the source code from the repository:
-2. Delete the `src/main/resources/l10n` directory.
+2. Empty the `src/main/resources/l10n/<TRANSLATION>.properties` file.
 3. Build the project using Maven:
    ```bash
    mvn test
