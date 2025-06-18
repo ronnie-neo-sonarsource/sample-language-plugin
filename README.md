@@ -34,7 +34,7 @@ You can fix this by updating it to `alerts.operator.!\u003d=`
 The same will happen for `alerts.operator.==` which should be updated to `alerts.operator.\u003d=`
 
 The python script assume the following:
-- Tn empty translation file, so if you have existing translations, you may need to manually merge them with the generated translations.
+- An empty translation file, so if you have existing translations, you may need to manually merge them with the generated translations.
 - The source file is in the format of surefire reports missing translations, which is the output of the SonarQube test.
 
 
