@@ -25,7 +25,20 @@ These are the steps to generate a translation plugin for SonarQube.
    ```bash
    cp target/sonar-l10n-ja-plugin-*.jar /path/to/sonarqube/extensions/plugins/
    ```
-   
+
+Maintaining the Plugin
+----------------------
+You will need to repackage this plugin to release any updates
+1. Update your server version in your `pom.xml`
+2. Run ``mvn test``
+
+For enterprise and developer edition:
+
+You can also view the full translation file in our public repo here
+https://github.com/SonarSource/sonarqube/blob/master/README.md#translations-files
+
+From the ts file, you can convert to `.properties` using the above-mentioned command
+
 Potential Issues
 -----------------
 You may encounter the following issues with `alerts.operator.!=` not being translated correctly.
