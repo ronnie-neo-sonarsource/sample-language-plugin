@@ -142,9 +142,10 @@ def translate_properties(input_file, output_file, target_lang, batch_size=500):
     save_properties(translated_all, output_file)
     print(f"✅ Translation complete. Output saved to {output_file}")
 
-# Translate every configured language.
-for language_name, locale in LANGUAGES:
-    source_filename = report_template.format(locale=locale)
-    target_filename = target_template.format(locale=locale)
-    print(f"\n=== {language_name} ({locale}) ===")
-    translate_properties(source_filename, target_filename, language_name, 500)
+if __name__ == "__main__":
+    # Translate every configured language.
+    for language_name, locale in LANGUAGES:
+        source_filename = report_template.format(locale=locale)
+        target_filename = target_template.format(locale=locale)
+        print(f"\n=== {language_name} ({locale}) ===")
+        translate_properties(source_filename, target_filename, language_name, 500)
