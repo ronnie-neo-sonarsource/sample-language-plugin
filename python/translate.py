@@ -5,9 +5,18 @@ import json
 from time import sleep
 from dotenv import load_dotenv
 
-target_language = "Japanese"
-target_filename = "../src/main/resources/org/sonar/l10n/core_ja.properties"
-source_filename = "../target/surefire-reports/org.sonar.plugins.l10n.JapanesePackPluginTest.txt"
+# Languages shipped by this pack. Add a new (name, locale) pair here to support
+# another language, and drop a matching core_<locale>.properties into
+# src/main/resources/org/sonar/l10n/ (an empty file is fine to start).
+LANGUAGES = [
+    ("Japanese", "ja"),
+    ("Korean", "ko"),
+]
+
+# Per-locale, `mvn test` writes the missing-translation report to
+# target/l10n/core_<locale>.properties.report.txt
+report_template = "../target/l10n/core_{locale}.properties.report.txt"
+target_template = "../src/main/resources/org/sonar/l10n/core_{locale}.properties"
 
  # Set your API key securely (env var preferred)
 load_dotenv()
@@ -34,7 +43,7 @@ def chunk_dict(d, chunk_size):
     for i in range(0, len(items), chunk_size):
         yield dict(items[i:i + chunk_size])
 
-def translate_chunk(chunk, target_lang="Korean"):
+def translate_chunk(chunk, target_lang):
     keys = list(chunk.keys())
     values = list(chunk.values())
 
@@ -49,7 +58,7 @@ def translate_chunk(chunk, target_lang="Korean"):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model=openai_model,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.3,
         )
@@ -113,12 +122,17 @@ def parse_properties(properties_string):
 
     return properties_dict
 
-def translate_properties(input_file, output_file, target_lang="Korean", batch_size=20):
+def translate_properties(input_file, output_file, target_lang, batch_size=500):
 
-    props = parse_properties(extract_expected_translation(input_file))
+    expected = extract_expected_translation(input_file)
+    if not expected:
+        print(f"⏭️  No missing translations found for {target_lang} (skipping {input_file}).")
+        return
+
+    props = parse_properties(expected)
     translated_all = {}
 
-    print(f"Translating {len(props)} entries in batches of {batch_size}...")
+    print(f"Translating {len(props)} entries into {target_lang} in batches of {batch_size}...")
     for i, chunk in enumerate(chunk_dict(props, batch_size), 1):
         print(f"🔄 Translating batch {i}...")
         translated = translate_chunk(chunk, target_lang)
@@ -128,5 +142,10 @@ def translate_properties(input_file, output_file, target_lang="Korean", batch_si
     save_properties(translated_all, output_file)
     print(f"✅ Translation complete. Output saved to {output_file}")
 
-# Example usage
-translate_properties(source_filename, target_filename, target_language, 500)
+if __name__ == "__main__":
+    # Translate every configured language.
+    for language_name, locale in LANGUAGES:
+        source_filename = report_template.format(locale=locale)
+        target_filename = target_template.format(locale=locale)
+        print(f"\n=== {language_name} ({locale}) ===")
+        translate_properties(source_filename, target_filename, language_name, 500)

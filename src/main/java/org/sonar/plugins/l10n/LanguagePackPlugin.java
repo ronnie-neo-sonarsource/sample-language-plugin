@@ -1,5 +1,5 @@
 /*
- * L10n :: Japanese Pack
+ * L10n :: Language Pack
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,16 @@ import java.util.Collections;
 
 import org.sonar.api.Plugin;
 
-public final class JapanesePackPlugin implements Plugin {
+/**
+ * Language pack for SonarQube.
+ *
+ * <p>SonarQube discovers translation bundles purely by their presence on the
+ * classpath: every {@code org/sonar/l10n/core_<locale>.properties} file is
+ * loaded automatically, keyed by its locale suffix. This plugin ships the
+ * Japanese ({@code core_ja.properties}) and Korean ({@code core_ko.properties})
+ * bundles, so no extensions need to be registered here.
+ */
+public final class LanguagePackPlugin implements Plugin {
     @Override
     public String toString() {
         return getClass().getSimpleName();
