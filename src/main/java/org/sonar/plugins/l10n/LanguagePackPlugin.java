@@ -66,6 +66,7 @@ public final class LanguagePackPlugin implements Plugin {
 
     @Override
     public void define(Context context) {
+        //TODO: This plugin does not register any extensions, but we still need to call addExtensions() to avoid a NPE in the PluginDefinition class.
         context.addExtensions(Collections.emptyList());
     }
 
