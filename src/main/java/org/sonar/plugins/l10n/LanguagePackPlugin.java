@@ -18,6 +18,7 @@
 package org.sonar.plugins.l10n;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.sonar.api.Plugin;
 
@@ -31,9 +32,36 @@ import org.sonar.api.Plugin;
  * bundles, so no extensions need to be registered here.
  */
 public final class LanguagePackPlugin implements Plugin {
+
+    private static final String BUNDLE_PATH_FORMAT = "org/sonar/l10n/core_%s.properties";
+
+    /** Locales whose translation bundles this plugin is expected to ship. */
+    private static final List<String> BUNDLED_LOCALES = List.of("ja", "ko");
+
     @Override
     public String toString() {
         return getClass().getSimpleName();
+    }
+
+    /**
+     * Checks whether the translation bundle for a given locale is present on the classpath.
+     *
+     * @param locale the locale suffix of the bundle, e.g. {@code ja}
+     * @return {@code true} if {@code org/sonar/l10n/core_<locale>.properties} can be resolved
+     */
+    public boolean hasBundle(String locale) {
+        String path = String.format(BUNDLE_PATH_FORMAT, locale);
+        return getClass().getClassLoader().getResource(path) != null;
+    }
+
+    /**
+     * Checks whether every bundle this plugin ships is present on the classpath. Useful as a
+     * sanity check that the resources were packaged into the jar alongside this class.
+     *
+     * @return {@code true} if all of {@link #BUNDLED_LOCALES} resolve to a properties file
+     */
+    public boolean hasAllBundles() {
+        return BUNDLED_LOCALES.stream().allMatch(this::hasBundle);
     }
 
     @Override
