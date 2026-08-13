@@ -51,4 +51,20 @@ public class LanguagePackPluginTest {
         languagePackPlugin.define(context);
     }
 
+    @Test
+    public void has_bundle_should_find_shipped_locales() {
+        LanguagePackPlugin languagePackPlugin = new LanguagePackPlugin();
+
+        Assert.assertTrue(languagePackPlugin.has_bundle("ja"));
+        Assert.assertTrue(languagePackPlugin.has_bundle("ko"));
+        Assert.assertFalse(languagePackPlugin.has_bundle("does_not_exist"));
+    }
+
+    @Test
+    public void has_all_bundles_should_be_true_when_all_shipped_bundles_are_present() {
+        LanguagePackPlugin languagePackPlugin = new LanguagePackPlugin();
+
+        Assert.assertTrue(languagePackPlugin.has_all_bundles());
+    }
+
 }
