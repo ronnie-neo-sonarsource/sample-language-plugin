@@ -1,5 +1,5 @@
 /*
- * L10n :: Japanese Pack
+ * L10n :: Language Pack
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,26 +28,43 @@ import org.sonar.api.SonarRuntime;
 import org.sonar.api.utils.Version;
 import org.sonar.test.i18n.I18nMatchers;
 
-public class JapanesePackPluginTest {
+public class LanguagePackPluginTest {
 
     @Test
     public void bundles_should_be_up_to_date() {
-        // Skip test, because of merge conflict in SonarQube-6.1
+        // Validates every core_<locale>.properties bundle on the classpath
+        // (core_ja.properties and core_ko.properties) against the English core bundle.
         // https://github.com/SonarSource/sonarqube/commit/50c03de3431007269b0966a8fdf1fe032c9521f6
         I18nMatchers.assertBundlesUpToDate();
     }
     // coverage
     @Test
-    public void testJapanesePackPlugin() {
-        JapanesePackPlugin jpPackPlugin = new JapanesePackPlugin();
+    public void testLanguagePackPlugin() {
+        LanguagePackPlugin languagePackPlugin = new LanguagePackPlugin();
 
-        String pluginName = jpPackPlugin.toString();
-        Assert.assertEquals("JapanesePackPlugin", pluginName);
+        String pluginName = languagePackPlugin.toString();
+        Assert.assertEquals("LanguagePackPlugin", pluginName);
 
         SonarRuntime runtime = SonarRuntimeImpl.forSonarQube(Version.create(10, 8),
                 SonarQubeSide.SCANNER, SonarEdition.ENTERPRISE);
         Plugin.Context context = new PluginContextImpl.Builder().setSonarRuntime(runtime).build();
-        jpPackPlugin.define(context);
+        languagePackPlugin.define(context);
+    }
+
+    @Test
+    public void has_bundle_should_find_shipped_locales() {
+        LanguagePackPlugin languagePackPlugin = new LanguagePackPlugin();
+
+        Assert.assertTrue(languagePackPlugin.has_bundle("ja"));
+        Assert.assertTrue(languagePackPlugin.has_bundle("ko"));
+        Assert.assertFalse(languagePackPlugin.has_bundle("does_not_exist"));
+    }
+
+    @Test
+    public void has_all_bundles_should_be_true_when_all_shipped_bundles_are_present() {
+        LanguagePackPlugin languagePackPlugin = new LanguagePackPlugin();
+
+        Assert.assertTrue(languagePackPlugin.has_all_bundles());
     }
 
 }
