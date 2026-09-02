@@ -3,27 +3,38 @@ Sample Translation Plugin for SonarQube
 
 Please also refer to the [SonarQube documentation](https://docs.sonarsource.com/sonarqube-server/latest/extension-guide/internationalization/) for more details on how to create a translation plugin.
 
-These are the steps to generate a translation plugin for SonarQube.
+This pack ships more than one language in a single plugin. SonarQube discovers
+translation bundles purely by their presence on the classpath — every
+`src/main/resources/org/sonar/l10n/core_<locale>.properties` file is loaded
+automatically, keyed by its locale suffix. Today it ships **Japanese**
+(`core_ja.properties`) and **Korean** (`core_ko.properties`); to add another
+language, drop in a `core_<locale>.properties` file and add the language to the
+`LANGUAGES` list in `python/translate.py`. No Java changes are needed.
+
+These are the steps to generate translations for SonarQube.
 1. Download the source code from the repository:
-2. Empty the `src/main/resources/l10n/<TRANSLATION>.properties` file.
+2. Empty the `src/main/resources/org/sonar/l10n/core_<locale>.properties` file(s) you want to (re)generate.
 3. Build the project using Maven:
    ```bash
    mvn test
    ```
-4. This will generate a list of missing translations in the `target/` directory.
+4. This writes a per-locale missing-translation report to `target/l10n/core_<locale>.properties.report.txt`.
 5. Configure the python script to include your OpenAI API key by editing the `.env` file in the python folder:
-6. Run the python script `generate_translations.py`.  
+6. Run the python script.
    ```bash
-   python3 generate_translations.py
+   cd python
+   python3 translate.py
    ```
-   This script will automatically assume the missing translation file in `../target/surefire-reports/org.sonar.plugins.l10n.JapanesePackPluginTest.txt` and output it to `../src/main/resources/org/sonar/l10n/core_ja.properties`
+   For each language in its `LANGUAGES` list, the script reads
+   `../target/l10n/core_<locale>.properties.report.txt` and writes the
+   translations to `../src/main/resources/org/sonar/l10n/core_<locale>.properties`.
 7. Build the project again using Maven:
    ```bash
    mvn clean package
    ```
 8. Copy the target JAR file to the SonarQube plugins directory:
    ```bash
-   cp target/sonar-l10n-ja-plugin-*.jar /path/to/sonarqube/extensions/plugins/
+   cp target/sonar-l10n-plugin-*.jar /path/to/sonarqube/extensions/plugins/
    ```
 
 Maintaining the Plugin
